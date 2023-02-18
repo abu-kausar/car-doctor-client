@@ -1,18 +1,17 @@
 import React from 'react';
+import './BannerItem.css';
 
 const BannerItem = ({slide}) => {
     const {image, id, prev, next} = slide;
     return (
         <div id={`slide${id}`} className="carousel-item relative w-full">
             <div className='carousel-image'>
-                <img src={image} className="w-full" alt='' />
+                <img src={image} className="w-full rounded-xl" alt='' />
             </div>
 
-            <div className="absolute flex justify-end transform -translate-y-1/2 left-24 top-1/4">
+            <div className="absolute flex justify-end transform -translate-y-1/2 w-1/4 left-24 top-1/4">
                 <h1 className='text-6xl font-bold text-white'>
-                    Affordable <br />
-                    Price for car <br />
-                    Servicing
+                    Affordable Price for car Servicing
                 </h1>
             </div>
             <div className="absolute flex justify-end transform -translate-y-1/2 w-2/5 left-24 top-1/2">
