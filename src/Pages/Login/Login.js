@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import image from '../..//assets/images/login/login.svg'
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 
 const Login = () => {
-    const {loginUser} = useContext(AuthContext)
+    const [signedInUser, setSignedInUser] = useState({
+        isLoggedIn: false,
+        email: ''
+    })
+    const { loginUser, loginUsingGoogle } = useContext(AuthContext)
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -13,13 +17,34 @@ const Login = () => {
         const password = form.password.value;
 
         loginUser(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            console.log(user);
-            console.log(user.email);
-        })
-        .catch((error) => console.error(error));
+            .then((userCredential) => {
+                const user = userCredential.user;
+                const { email } = user;
+
+                const newUser = {
+                    isLoggedIn: true,
+                    email: email
+                }
+                setSignedInUser(newUser);
+                console.log(user.email, signedInUser.isLoggedIn);
+            })
+            .catch((error) => console.error(error));
     }
+
+    const handleSignOut = () => {
+
+    }
+
+    const handleGoogleSignIn = (event) => {
+        loginUsingGoogle()
+            .then((result) => {
+                const user = result.user;
+                console.log(user);
+                alert(`${user.displayName} is successfully signed in`)
+            })
+            .catch((error)=>console.error(error))
+    }
+
     return (
         <div className="hero w-full my-20">
             <div className="hero-content grid gap-20 md:grid-cols-2 flex-col lg:flex-row">
@@ -44,8 +69,26 @@ const Login = () => {
                                 <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                             </label>
                         </div>
-                        <div className="form-control mt-6">
-                            <input type="submit" className="btn btn-primary" value="Login" />
+
+                        <div className="form-control mt-2">
+                            <input type="submit" className="btn" value="Login" />
+                        </div>
+
+                        {/* {
+                            !signedInUser.isLoggedIn ?
+                                <div className="form-control mt-2">
+                                    <input type="submit" className="btn" value="Login" />
+                                </div>
+                                :
+                                <div className="form-control mt-2">
+                                    <input type="submit" className="btn" value="Log Out" />
+                                </div>
+                        } */}
+
+                        <p className='text-center text-orange-600 font-bold'>Or</p>
+
+                        <div className="form-control mt-2">
+                            <button onClick={handleGoogleSignIn} className="btn-primary btn btn-full">Sign In Using Google</button>
                         </div>
                     </form>
                     <p className='text-center'>New to Car Doctor <Link className='text-orange-600 font-bold' to="/signup">Sign Up</Link></p>
