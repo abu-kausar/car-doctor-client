@@ -39,10 +39,9 @@ const Login = () => {
         loginUsingGoogle()
             .then((result) => {
                 const user = result.user;
-                console.log(user);
                 alert(`${user.displayName} is successfully signed in`)
             })
-            .catch((error)=>console.error(error))
+            .catch((error) => console.error(error))
     }
 
     return (
@@ -74,6 +73,12 @@ const Login = () => {
                             <input type="submit" className="btn" value="Login" />
                         </div>
 
+                        <p className='text-center text-orange-600 font-bold'>Or</p>
+
+                        <div className="form-control mt-2">
+                            <button onClick={handleGoogleSignIn} className="btn-primary btn btn-full">Sign In Using Google</button>
+                        </div>
+
                         {/* {
                             !signedInUser.isLoggedIn ?
                                 <div className="form-control mt-2">
@@ -84,13 +89,9 @@ const Login = () => {
                                     <input type="submit" className="btn" value="Log Out" />
                                 </div>
                         } */}
-
-                        <p className='text-center text-orange-600 font-bold'>Or</p>
-
-                        <div className="form-control mt-2">
-                            <button onClick={handleGoogleSignIn} className="btn-primary btn btn-full">Sign In Using Google</button>
-                        </div>
                     </form>
+
+
                     <p className='text-center'>New to Car Doctor <Link className='text-orange-600 font-bold' to="/signup">Sign Up</Link></p>
                 </div>
             </div>
