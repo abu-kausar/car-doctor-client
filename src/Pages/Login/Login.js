@@ -32,7 +32,7 @@ const Login = () => {
     }
 
     const handleSignOut = () => {
-
+        
     }
 
     const handleGoogleSignIn = (event) => {
