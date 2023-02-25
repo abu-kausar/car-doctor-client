@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import image from '../..//assets/images/login/login.svg'
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 
 const SignUp = () => {
     const {createUser} = useContext(AuthContext)
+    const navigate = useNavigate();
 
     const handleSignUp = (event) => {
         event.preventDefault();
@@ -16,6 +17,8 @@ const SignUp = () => {
         .then(userCredential => {
             const user = userCredential.user;
             console.log(user)
+            alert('Signed up successfully')
+            navigate('/');
         })
         .catch(err=> console.error(err))
     }
@@ -44,7 +47,7 @@ const SignUp = () => {
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="text" name='password' placeholder="password" className="input input-bordered" required/>
+                            <input type="password" name='password' placeholder="password" className="input input-bordered" required/>
                         </div>
                         <div className="form-control mt-6">
                             <input type="submit" className="btn btn-primary" value="Sign Up" />

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import image from '../..//assets/images/login/login.svg'
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 
@@ -8,6 +8,9 @@ const Login = () => {
         isLoggedIn: false,
         email: ''
     })
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
     const { loginUser, loginUsingGoogle } = useContext(AuthContext)
 
     const handleLogin = (event) => {
@@ -26,13 +29,9 @@ const Login = () => {
                     email: email
                 }
                 setSignedInUser(newUser);
-                console.log(user.email, signedInUser.isLoggedIn);
+                navigate(from, {replace: true});
             })
             .catch((error) => console.error(error));
-    }
-
-    const handleSignOut = () => {
-        
     }
 
     const handleGoogleSignIn = (event) => {

@@ -1,24 +1,36 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import logo from '../../..//assets/logo.svg';
 import { AuthContext } from '../../../AuthProvider/AuthProvider';
 
 const Header = () => {
 
-    const {user} = useContext(AuthContext);
+    const {user, logoutUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogOut = () => {
+        logoutUser()
+        .then(() => {
+            alert('Logged out successfully');
+            navigate('/');
+          }).catch((error) => {
+            console.log(error)
+          })
+    }
 
     const menuItems = <>
         <li className='font-semibold'><Link to="/">Home</Link></li>
         {
-            user?.email ? <li className='font-semibold'><Link to="/orders">Orders</Link></li>
+            user?.email ? 
+            <>
+                <li className='font-semibold'><Link to="/orders">Orders</Link></li>
+                <li className='font-semibold'><Link>{user.email}</Link></li>
+                <li className='font-semibold'>
+                    <button onClick={handleLogOut} className='btn-ghost'>Sign Out</button>
+                </li>
+            </>
             :
             <li className='font-semibold'><Link to="/login">Login</Link></li>
-        }
-
-        {
-            user?.email ? <li className='font-semibold'><button>{user.email}</button></li>
-            :
-            ''
         }
     </>
 
@@ -40,16 +52,16 @@ const Header = () => {
                         <img className='w-3/4' src={logo} alt="" />
                     </Link>
                 </div>
-                <div className="navbar-center hidden lg:flex">
+                <div className="navbar-end hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
                         {
                             menuItems
                         }
                     </ul>
                 </div>
-                <div className="navbar-end">
+                {/* <div className="navbar-end">
                     <button className='btn btn-outline btn-warning'>Appointment</button>
-                </div>
+                </div> */}
             </div>
         </div>
     );

@@ -75,11 +75,7 @@ const Orders = () => {
                     {/* head */}
                     <thead>
                         <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox" className='checkbox' />
-                                </label>
-                            </th>
+                            <th></th>
                             <th>Name</th>
                             <th>Service Name</th>
                             <th>Price</th>
