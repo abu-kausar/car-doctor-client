@@ -29,7 +29,23 @@ const Login = () => {
                     email: email
                 }
                 setSignedInUser(newUser);
-                navigate(from, {replace: true});
+
+                //get jwt token
+                fetch('http://localhost:5000/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(newUser)
+                })
+                .then(res=>res.json())
+                .then(data=> {
+                    console.log(data);
+                    // local storage is not recommended to use 
+                    localStorage.setItem('token', data.token);
+                    navigate(from, {replace: true});
+                })
+                
             })
             .catch((error) => console.error(error));
     }
@@ -77,17 +93,6 @@ const Login = () => {
                         <div className="form-control mt-2">
                             <button onClick={handleGoogleSignIn} className="btn-primary btn btn-full">Sign In Using Google</button>
                         </div>
-
-                        {/* {
-                            !signedInUser.isLoggedIn ?
-                                <div className="form-control mt-2">
-                                    <input type="submit" className="btn" value="Login" />
-                                </div>
-                                :
-                                <div className="form-control mt-2">
-                                    <input type="submit" className="btn" value="Log Out" />
-                                </div>
-                        } */}
                     </form>
 
 

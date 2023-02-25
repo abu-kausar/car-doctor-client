@@ -4,32 +4,34 @@ import { AuthContext } from '../../AuthProvider/AuthProvider';
 import OrderRow from './OrderRow';
 
 const Orders = () => {
-    const { user } = useContext(AuthContext);
-    // const email = user ? user.email : null;
+    const { user, logoutUser } = useContext(AuthContext);
 
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        // if (email) {
-        //     fetch(`http://localhost:5000/orders?email=${user?.email}`)
-        //         .then(res => res.json())
-        //         .then(data => {
-        //             setOrders(data)
-        //         })
-        // }
-
-        fetch(`http://localhost:5000/orders?email=${user?.email}`)
-            .then(res => res.json())
+        fetch(`http://localhost:5000/orders?email=${user?.email}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(res => {
+                if(res.status === 401 || res.status === 403) {
+                    return logoutUser();
+                }
+                return res.json()})
             .then(data => {
                 setOrders(data)
             })
-    }, [user?.email])
+    }, [user?.email, logoutUser])
 
     const handleDelete = id => {
         const confirmation = window.confirm('Are you sure you want to delete');
         if(confirmation){
         fetch(`http://localhost:5000/orders/${id}`,{
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`
+            },
         })
         .then(res=>res.json())
         .then(data => {
@@ -47,7 +49,8 @@ const Orders = () => {
         fetch(`http://localhost:5000/orders/${id}`, {
             method: 'PATCH',
             headers: { 
-                'Content-Type': 'application/json' 
+                'Content-Type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('token')}` 
             },
             body: JSON.stringify({status: 'Approved'})
         })
